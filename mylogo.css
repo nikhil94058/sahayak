@@ -1,0 +1,39 @@
+
+
+.logo {
+    font-size: 48px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    opacity: 0; /* Initially set opacity to 0 to hide the text */
+    animation: fadeInAndColorChange 8s infinite alternate; /* Combined Animation */
+}
+
+.letter {
+    color: #00aaff; /* Blue color for the "S" */
+}
+
+/* Define the keyframes for the combined animation */
+@keyframes fadeInAndColorChange {
+    0% {
+        opacity: 0;
+        color: #00aaff; /* Blue at 0% */
+    }
+    25% {
+        opacity: 1;
+        color: #00aaff; /* Blue at 25% */
+    }
+    50% {
+        opacity: 1;
+        color: #ff0000; /* Red at 50% */
+    }
+    75% {
+        opacity: 1;
+        color: #ff0000; /* Red at 75% */
+    }
+    100% {
+        opacity: 1;
+        color: #00ff00; /* Green at 100% */
+    }
+}

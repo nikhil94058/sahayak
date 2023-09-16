@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sahayak.in</title>
+    <style>
+        body {
+            background-image: url('Untitled.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .navbar {
+            background: linear-gradient(to bottom, #333, #005C1E);
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .navbar a {
+            float: left;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #009933;
+        }
+
+        .logo {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 20px;
+            font-size: 48px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: fadeInAndColorChange 8s infinite alternate;
+        }
+
+        .letter {
+            color: #00aaff;
+        }
+
+        @keyframes fadeInAndColorChange {
+            0% {
+                opacity: 0;
+                color: #00aaff;
+            }
+            25% {
+                opacity: 1;
+                color: #00aaff;
+            }
+            50% {
+                opacity: 1;
+                color: #ff0000;
+            }
+            75% {
+                opacity: 1;
+                color: #ff0000;
+            }
+            100% {
+                opacity: 1;
+                color: #00ff00;
+            }
+        }
+
+        .chat-container {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .chat-area {
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .chat-message.bot {
+            background-color: #0099cc;
+            color: #fff;
+            align-self: flex-start;
+        }
+
+        .chat-message.user {
+            background-color: #0099cc;
+            color: #fff;
+            align-self: flex-start;
+        }
+
+        .user-input {
+            position: absolute;
+            bottom: 0;
+            width: 1300px;
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        #user-message {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #send-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #send-button:hover {
+            background-color: #555;
+        }
+
+        .about-section {
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+    <div class="logo">Sahayak</div>
+</div>
+
+<div>
+    <center>
+        <div class="chat-header">
+            <h3>"Sahayak" is an intelligent chatbot designed to provide assistance and perform various tasks based on user commands. Whether you need information from Wikipedia, want to open a website, play music, send emails, or perform other tasks, Sahayak is here to help.</h3>
+        </div>
+        <div class="chat-area" id="chat-area">
+            <div class="chat-message bot">
+                <p>Hello! How can I assist you today?</p>
+            </div>
+            <div class="chat-message user"></div>
+        </div>
+        <div class="user-input">
+            <input type="text" id="user-message" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </center>
+</div>
+
+
+
+<!-- Add this script to your HTML file -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatArea = document.getElementById('chat-area');
+        const userMessageInput = document.getElementById('user-message');
+        const sendButton = document.getElementById('send-button');
+
+        sendButton.addEventListener('click', () => {
+            const userMessage = userMessageInput.value;
+            userMessageInput.value = '';
+
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.textContent = userMessage;
+            userMessageDiv.classList.add('chat-message', 'user');
+            chatArea.appendChild(userMessageDiv);
+
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user_message: userMessage }),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                const botResponse = data.bot_response;
+
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.textContent = botResponse;
+                botMessageDiv.classList.add('chat-message', 'bot');
+                chatArea.appendChild(botMessageDiv);
+            })
+            .catch((error) => {
+                console.error('API request failed:', error);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
